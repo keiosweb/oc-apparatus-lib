@@ -1,0 +1,15 @@
+{
+    "name": "keios/apparatus-framework",
+    "description": "Keios Apparatus Application Framework library for OctoberCMS",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Łukasz Biały",
+            "email": "lukasz@c-call.eu"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "keios/laravel-apparatus": "~1.0@dev"
+    }
+}
