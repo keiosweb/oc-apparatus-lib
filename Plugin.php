@@ -1,5 +1,7 @@
 <?php namespace Keios\Apparatus;
 
+use Illuminate\Foundation\AliasLoader;
+use Keios\Apparatus\Classes\RouteResolver;
 use System\Classes\PluginBase;
 
 /**
@@ -26,6 +28,12 @@ class Plugin extends PluginBase
     public function boot()
     {
         $this->app->register('Keios\LaravelApparatus\LaravelApparatusServiceProvider');
+        $this->app->singleton('apparatus.route.resolver', function(){
+           return new RouteResolver();
+        });
+
+        $aliasLoader = AliasLoader::getInstance();
+        $aliasLoader->alias('Resolver', 'Keios\Apparatus\Facades\Resolver');
     }
 
 }
