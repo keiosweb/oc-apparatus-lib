@@ -1,7 +1,10 @@
 <?php namespace Keios\Apparatus\Classes;
 
+use Illuminate\Contracts\Logging\Log;
+use Illuminate\Contracts\Config\Repository;
 use Cms\Classes\Theme;
 use Cms\Classes\Page;
+
 
 class RouteResolver
 {
@@ -9,12 +12,18 @@ class RouteResolver
 
     protected $pages;
 
+    protected $log;
+
+    protected $config;
+
     protected $componentPageCache = [];
 
-    public function __construct()
+    public function __construct(Repository $config, Log $log)
     {
         $this->theme = Theme::getEditTheme();
         $this->pages = Page::listInTheme($this->theme, true);
+        $this->log = $log;
+        $this->config = $config;
     }
 
     public function getPageWithComponent($component)
@@ -34,6 +43,8 @@ class RouteResolver
             }
         }
 
+        $this->componentNotFound($component);
+
         return null;
     }
 
@@ -49,9 +60,21 @@ class RouteResolver
     public function resolveParameterizedRouteTo($component, $parameter, $value)
     {
         $page = $this->getPageWithComponent($component);
+
+        if (!$page) {
+            return '/error';
+        }
+
         $url = $this->resolveRouteTo($component);
 
         $properties = $page->getComponentProperties($component);
+
+        if (!array_key_exists($parameter, $properties)) {
+            $this->parameterNotFound($parameter, $component);
+
+            return '/error';
+        }
+
         $parameterValue = $properties[$parameter];
 
         if (strpos($parameterValue, '{') !== false) {
@@ -64,6 +87,28 @@ class RouteResolver
             return preg_replace('/\\:('.$parameterValue.')\\??/', $value, $url, -1);
         } else {
             return null;
+        }
+    }
+
+    protected function componentNotFound($component)
+    {
+        if ($this->config->get('app.debug')) {
+            throw new \Exception(sprintf(trans('keios.apparatus::lang.errors.pageWithComponentNotFound'), $component));
+        } else {
+            $this->log->error(sprintf(trans('keios.apparatus::lang.errors.pageWithComponentNotFound'), $component));
+        }
+    }
+
+    protected function parameterNotFound($parameter, $component)
+    {
+        if ($this->config->get('app.debug')) {
+            throw new \Exception(
+                sprintf(trans('keios.apparatus::lang.errors.parameterNotFound'), $parameter, $component)
+            );
+        } else {
+            $this->log->error(
+                sprintf(trans('keios.apparatus::lang.errors.parameterNotFound'), $parameter, $component)
+            );
         }
     }
 }

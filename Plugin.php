@@ -28,9 +28,12 @@ class Plugin extends PluginBase
     public function boot()
     {
         $this->app->register('Keios\LaravelApparatus\LaravelApparatusServiceProvider');
-        $this->app->singleton('apparatus.route.resolver', function(){
-           return new RouteResolver();
-        });
+        $this->app->singleton(
+            'apparatus.route.resolver',
+            function () {
+                return new RouteResolver($this->app['config'], $this->app->make('log'));
+            }
+        );
 
         $aliasLoader = AliasLoader::getInstance();
         $aliasLoader->alias('Resolver', 'Keios\Apparatus\Facades\Resolver');
