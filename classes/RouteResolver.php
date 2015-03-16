@@ -54,6 +54,12 @@ class RouteResolver
         $properties = $page->getComponentProperties($component);
         $parameterValue = $properties[$parameter];
 
+        if (strpos($parameterValue, '{') !== false) {
+            $parameterValue = trim(str_replace('{', '', str_replace('}', '', str_replace(':', '', $parameterValue))));
+        } elseif (strpos($parameterValue, ':') !== false) {
+            $parameterValue = trim(str_replace(':', '', $parameterValue));
+        }
+
         if (strpos($url, ':') !== false) {
             return preg_replace('/\\:('.$parameterValue.')\\??/', $value, $url, -1);
         } else {
