@@ -57,10 +57,41 @@ class RouteResolver
         }
     }
 
+    public function stripUrlParameters($url)
+    {
+        if (strpos($url, '/:') !== false) {
+            $parts = explode('/:', $url);
+
+            return $parts[0];
+        } else {
+            return $url;
+        }
+    }
+
+    public function resolveRouteWithoutParamsTo($component)
+    {
+        $page = $this->getPageWithComponent($component);
+
+        /*
+         * In production, on broken component links, return /error for graceful error handling
+         */
+        if (!$page) {
+            return '/error';
+        }
+
+        $url = $this->resolveRouteTo($component);
+
+        return $this->stripUrlParameters($url);
+    }
+
+
     public function resolveParameterizedRouteTo($component, $parameter, $value)
     {
         $page = $this->getPageWithComponent($component);
 
+        /*
+         * In production, on broken component links, return /error for graceful error handling
+         */
         if (!$page) {
             return '/error';
         }
@@ -69,6 +100,9 @@ class RouteResolver
 
         $properties = $page->getComponentProperties($component);
 
+        /*
+         * In production, on broken component links, return /error for graceful error handling
+         */
         if (!array_key_exists($parameter, $properties)) {
             $this->parameterNotFound($parameter, $component);
 
@@ -77,8 +111,13 @@ class RouteResolver
 
         $parameterValue = $properties[$parameter];
 
+        /*
+         * Strip external parameter tags, ie {{ :code }} -> code
+         */
         if (strpos($parameterValue, '{') !== false) {
             $parameterValue = trim(str_replace('{', '', str_replace('}', '', str_replace(':', '', $parameterValue))));
+
+            // also: :code -> code
         } elseif (strpos($parameterValue, ':') !== false) {
             $parameterValue = trim(str_replace(':', '', $parameterValue));
         }
