@@ -1,6 +1,7 @@
 <?php namespace Keios\Apparatus;
 
 use Illuminate\Foundation\AliasLoader;
+use Keios\Apparatus\Classes\BackendInjector;
 use Keios\Apparatus\Classes\RouteResolver;
 use System\Classes\PluginBase;
 
@@ -25,6 +26,28 @@ class Plugin extends PluginBase
         ];
     }
 
+    public function registerComponents()
+    {
+        return [
+            'Keios\Apparatus\Components\Messaging' => 'apparatusFlashMessages'
+        ];
+    }
+
+    public function registerSettings()
+    {
+        return [
+            'messaging' => [
+                'label' => 'keios.apparatus::lang.settings.messaging.label',
+                'description' => 'keios.apparatus::lang.settings.messaging.description',
+                'category' => 'Apparatus',
+                'icon' => 'icon-globe',
+                'class' => '\Keios\Apparatus\Models\Settings',
+                'order' => 500,
+                'keywords' => 'messages flash notifications'
+            ]
+        ];
+    }
+
     public function boot()
     {
         $this->app->register('Keios\LaravelApparatus\LaravelApparatusServiceProvider');
@@ -35,8 +58,18 @@ class Plugin extends PluginBase
             }
         );
 
+        $this->app->singleton(
+            'apparatus.backend.injector',
+            function () {
+                return new BackendInjector();
+            }
+        );
+
         $aliasLoader = AliasLoader::getInstance();
         $aliasLoader->alias('Resolver', 'Keios\Apparatus\Facades\Resolver');
+
+        $injector = $this->app->make('apparatus.backend.injector');
+        $injector->addCss('/plugins/keios/apparatus/assets/css/animate.css');
     }
 
 }

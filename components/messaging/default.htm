@@ -1,0 +1,20 @@
+<div data-messaging-config
+     data-msg-layout="{{ __SELF__.layout }}"
+     data-msg-theme="{{ __SELF__.theme }}"
+     data-msg-dismiss-queue="{{ __SELF__.dismissQueue }}"
+     data-msg-template="{{ __SELF__.template }}"
+     data-msg-animation-open="{{ __SELF__.openAnimation }}"
+     data-msg-animation-close="{{ __SELF__.closeAnimation }}"
+     data-msg-timeout="{{ __SELF__.timeout }}"
+     data-msg-force="{{ __SELF__.force }}"
+     data-msg-modal="{{ __SELF__.modal }}"
+     data-msg-max-visible="{{ __SELF__.maxVisible }}"
+        >
+</div>
+{% flash %}
+<script type="text/javascript" language="javascript">
+    $(function () {
+        $.apparatus.messaging.handleFlashMessage('{{ type }}', '{{ message }}');
+    });
+</script>
+{% endflash %}

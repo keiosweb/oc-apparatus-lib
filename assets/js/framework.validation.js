@@ -3,6 +3,10 @@
 
     "use strict";
 
+    if (!$.apparatus) {
+        $.apparatus = {};
+    }
+
     var defaults = {
         messageClass: 'validation-message',
         debug: true
@@ -13,25 +17,26 @@
         this.errorFieldsCache = {};
         this.$window = $(window);
 
-        var configurationEvent = $.Event('apparatus.validation.configure');
-        this.$window.trigger(configurationEvent);
+        var configEl = $('[data-validation-config]');
 
-        if (!configurationEvent.config) {
-            configurationEvent.config = {};
+        if (configEl.length) {
+            configEl = configEl.first();
         }
 
-        this.config = $.extend({}, defaults, configurationEvent.config);
+        var config = this.makeConfig(configEl);
+
+        this.config = $.extend(true, {}, defaults, config);
 
         this.$window.on('oc.beforeRequest', function () {
             self.clearValidationErrors();
         });
 
-        // kill alert
-        this.$window.on('ajaxErrorMessage', function (event) {
-            event.preventDefault();
-        });
-
         this.$window.on('ajaxError', function (event, context, textString, jqXHR) {
+            // prevent alert on if error fields is present
+            if (jqXHR.hasOwnProperty('responseJSON') && jqXHR['responseJSON'].hasOwnProperty('X_OCTOBER_ERROR_FIELDS')) {
+                event.preventDefault()
+            }
+
             // show errors other than validation in console
             if (self.config.debug && jqXHR.hasOwnProperty('responseJSON') && jqXHR['responseJSON'].hasOwnProperty('X_OCTOBER_ERROR_MESSAGE')) {
                 console.log(jqXHR['responseJSON']['X_OCTOBER_ERROR_MESSAGE']);
@@ -42,6 +47,17 @@
             self.handleInvalidField(fieldElement, fieldName, fieldMessages, isFirstInvalidField);
         });
     }
+
+    ValidationHelper.prototype.makeConfig = function (configEl) {
+        if (!configEl.data) {
+            return {};
+        }
+
+        return {
+            messageClass: configEl.data('message-class') ? configEl.data('message-class') : defaults.messageClass,
+            debug: configEl.data('debug')
+        };
+    };
 
     ValidationHelper.prototype.clearValidationErrors = function () {
         for (var field in this.errorFieldsCache) {
@@ -68,12 +84,11 @@
             container.append('<p class="' + self.config.messageClass + '">' + message + '</p>');
         });
 
-        if (isFirstInvalidField){
+        if (isFirstInvalidField) {
             fieldElement.focus();
         }
     };
 
-    $.validation = new ValidationHelper();
+    $.apparatus.validation = new ValidationHelper();
 
 })(jQuery, window, document);
-
