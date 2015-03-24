@@ -32,6 +32,7 @@ class Settings extends Model
     public function listAnimations()
     {
         return [
+            '' => 'none',
             'animated bounce' => 'bounce',
             'animated flash' => 'flash',
             'animated pulse' => 'pulse',

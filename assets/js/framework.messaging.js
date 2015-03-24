@@ -16,8 +16,10 @@ $(function () {
             dismissQueue: true, // If you want to use queue feature set this true
             template: '<div class="noty_message"><span class="noty_text"></span><div class="noty_close"></div></div>',
             animation: {
-                open: 'animated bounceInLeft',
-                close: 'animated bounceOutLeft'
+                open: {height: 'toggle'},
+                close: {height: 'toggle'},
+                easing: 'swing',
+                speed: 1
             },
             timeout: false, // delay for closing event. Set false for sticky notifications
             force: false, // adds notification to the beginning of queue when set to true
