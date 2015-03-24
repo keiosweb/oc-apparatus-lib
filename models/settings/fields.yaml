@@ -8,46 +8,46 @@ secondaryTabs:
     fields:
 
         layout:
-            label: keios.apparatus::lang.settings.messaging.layout
-            tab: keios.apparatus::lang.settings.messaging.tab
+            label: keios.apparatus::lang.settings.messaging-layout
+            tab: keios.apparatus::lang.settings.messaging-tab
             type: dropdown
         openAnimation:
-            label: keios.apparatus::lang.settings.messaging.openAnimation
-            tab: keios.apparatus::lang.settings.messaging.tab
+            label: keios.apparatus::lang.settings.messaging-openAnimation
+            tab: keios.apparatus::lang.settings.messaging-tab
             type: dropdown
             default: 'animated fadeIn'
         closeAnimation:
-            label: keios.apparatus::lang.settings.messaging.closeAnimation
-            tab: keios.apparatus::lang.settings.messaging.tab
+            label: keios.apparatus::lang.settings.messaging-closeAnimation
+            tab: keios.apparatus::lang.settings.messaging-tab
             type: dropdown
             default: 'animated fadeOut'
         theme:
-            label: keios.apparatus::lang.settings.messaging.theme
-            tab: keios.apparatus::lang.settings.messaging.tab
+            label: keios.apparatus::lang.settings.messaging-theme
+            tab: keios.apparatus::lang.settings.messaging-tab
             type: text
             placeholder: 'defaultTheme / relax / bootstrapTheme'
         template:
-            label: keios.apparatus::lang.settings.messaging.template
-            tab: keios.apparatus::lang.settings.messaging.tab
+            label: keios.apparatus::lang.settings.messaging-template
+            tab: keios.apparatus::lang.settings.messaging-tab
             type: textarea
         timeout:
-            label: keios.apparatus::lang.settings.messaging.timeout
-            tab: keios.apparatus::lang.settings.messaging.tab
+            label: keios.apparatus::lang.settings.messaging-timeout
+            tab: keios.apparatus::lang.settings.messaging-tab
             type: number
         dismissQueue:
-            label: keios.apparatus::lang.settings.messaging.dismissQueue
-            tab: keios.apparatus::lang.settings.messaging.tab
+            label: keios.apparatus::lang.settings.messaging-dismissQueue
+            tab: keios.apparatus::lang.settings.messaging-tab
             type: switch
         force:
-            label: keios.apparatus::lang.settings.messaging.force
-            tab: keios.apparatus::lang.settings.messaging.tab
+            label: keios.apparatus::lang.settings.messaging-force
+            tab: keios.apparatus::lang.settings.messaging-tab
             type: switch
         modal:
-            label: keios.apparatus::lang.settings.messaging.modal
-            tab: keios.apparatus::lang.settings.messaging.tab
+            label: keios.apparatus::lang.settings.messaging-modal
+            tab: keios.apparatus::lang.settings.messaging-tab
             type: switch
         maxVisible:
-            label: keios.apparatus::lang.settings.messaging.maxVisible
-            tab: keios.apparatus::lang.settings.messaging.tab
+            label: keios.apparatus::lang.settings.messaging-maxVisible
+            tab: keios.apparatus::lang.settings.messaging-tab
             type: number
             default: 5

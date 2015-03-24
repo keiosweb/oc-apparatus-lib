@@ -37,8 +37,8 @@ class Plugin extends PluginBase
     {
         return [
             'messaging' => [
-                'label' => 'keios.apparatus::lang.settings.messaging.label',
-                'description' => 'keios.apparatus::lang.settings.messaging.description',
+                'label' => 'keios.apparatus::lang.settings.messaging-label',
+                'description' => 'keios.apparatus::lang.settings.messaging-description',
                 'category' => 'Apparatus',
                 'icon' => 'icon-globe',
                 'class' => '\Keios\Apparatus\Models\Settings',
