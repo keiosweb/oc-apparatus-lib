@@ -20,7 +20,7 @@ class RouteResolver
 
     public function __construct(Repository $config, Log $log)
     {
-        $this->theme = Theme::getEditTheme();
+        $this->theme = Theme::getActiveTheme();
         $this->pages = Page::listInTheme($this->theme, true);
         $this->log = $log;
         $this->config = $config;
