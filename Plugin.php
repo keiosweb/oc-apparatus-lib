@@ -1,7 +1,9 @@
 <?php namespace Keios\Apparatus;
 
+use Cms\Classes\ComponentBase;
 use Illuminate\Foundation\AliasLoader;
 use Keios\Apparatus\Classes\BackendInjector;
+use Keios\Apparatus\Classes\DependencyInjector;
 use Keios\Apparatus\Classes\RouteResolver;
 use System\Classes\PluginBase;
 
@@ -19,10 +21,10 @@ class Plugin extends PluginBase
     public function pluginDetails()
     {
         return [
-            'name' => 'Apparatus',
+            'name'        => 'Apparatus',
             'description' => 'keios.apparatus::lang.labels.pluginName',
-            'author' => 'Keios',
-            'icon' => 'icon-cogs'
+            'author'      => 'Keios',
+            'icon'        => 'icon-cogs'
         ];
     }
 
@@ -37,13 +39,13 @@ class Plugin extends PluginBase
     {
         return [
             'messaging' => [
-                'label' => 'keios.apparatus::lang.settings.messaging-label',
+                'label'       => 'keios.apparatus::lang.settings.messaging-label',
                 'description' => 'keios.apparatus::lang.settings.messaging-description',
-                'category' => 'Apparatus',
-                'icon' => 'icon-globe',
-                'class' => '\Keios\Apparatus\Models\Settings',
-                'order' => 500,
-                'keywords' => 'messages flash notifications'
+                'category'    => 'Apparatus',
+                'icon'        => 'icon-globe',
+                'class'       => '\Keios\Apparatus\Models\Settings',
+                'order'       => 500,
+                'keywords'    => 'messages flash notifications'
             ]
         ];
     }
@@ -64,6 +66,18 @@ class Plugin extends PluginBase
                 return new BackendInjector();
             }
         );
+
+        $this->app->singleton('apparatus.dependencyInjector', function () {
+            return new DependencyInjector($this->app);
+        });
+
+        $this->app->make('events')->listen('cms.page.initComponents', function ($controller) {
+            foreach ($controller->vars as $variable) {
+                if ($variable instanceof ComponentBase) {
+                    $this->app->make('apparatus.dependencyInjector')->injectDependencies($variable);
+                }
+            }
+        });
 
         $aliasLoader = AliasLoader::getInstance();
         $aliasLoader->alias('Resolver', 'Keios\Apparatus\Facades\Resolver');
