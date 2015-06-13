@@ -23,3 +23,5 @@ Route::get(
         return $file->output('attachment');
     }
 )->where('slug', '(.*)?');
+
+Route::post('/_translapi', 'Keios\Apparatus\Classes\TranslApiController@getTranslations');

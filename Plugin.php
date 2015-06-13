@@ -52,13 +52,24 @@ class Plugin extends PluginBase
 
     public function boot()
     {
+        $translator = $this->app->make('translator');
+
         $this->app->register('Keios\LaravelApparatus\LaravelApparatusServiceProvider');
+
         $this->app->singleton(
             'apparatus.route.resolver',
             function () {
                 return new RouteResolver($this->app['config'], $this->app->make('log'));
             }
         );
+
+        $this->app->when('Keios\Apparatus\Classes\TranslApiController')
+            ->needs('October\Rain\Translation\Translator')
+            ->give(
+                function () use ($translator) {
+                    return $translator;
+                }
+            );
 
         $this->app->singleton(
             'apparatus.backend.injector',
@@ -67,17 +78,23 @@ class Plugin extends PluginBase
             }
         );
 
-        $this->app->singleton('apparatus.dependencyInjector', function () {
-            return new DependencyInjector($this->app);
-        });
+        $this->app->singleton(
+            'apparatus.dependencyInjector',
+            function () {
+                return new DependencyInjector($this->app);
+            }
+        );
 
-        $this->app->make('events')->listen('cms.page.initComponents', function ($controller) {
-            foreach ($controller->vars as $variable) {
-                if ($variable instanceof ComponentBase) {
-                    $this->app->make('apparatus.dependencyInjector')->injectDependencies($variable);
+        $this->app->make('events')->listen(
+            'cms.page.initComponents',
+            function ($controller) {
+                foreach ($controller->vars as $variable) {
+                    if ($variable instanceof ComponentBase) {
+                        $this->app->make('apparatus.dependencyInjector')->injectDependencies($variable);
+                    }
                 }
             }
-        });
+        );
 
         $aliasLoader = AliasLoader::getInstance();
         $aliasLoader->alias('Resolver', 'Keios\Apparatus\Facades\Resolver');
