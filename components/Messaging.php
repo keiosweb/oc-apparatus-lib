@@ -30,16 +30,22 @@ class Messaging extends ComponentBase
         $this->addJs('/plugins/keios/apparatus/assets/js/noty/packaged/jquery.noty.packaged.min.js');
         $this->addJs('/plugins/keios/apparatus/assets/js/framework.messaging.js');
 
-        $this->layout = Settings::instance()->get('layout');
-        $this->openAnimation = Settings::instance()->get('openAnimation');
-        $this->closeAnimation = Settings::instance()->get('closeAnimation');
-        $this->theme = Settings::instance()->get('theme');
-        $this->template = Settings::instance()->get('template');
-        $this->timeout = Settings::instance()->get('timeout');
-        $this->dismissQueue = Settings::instance()->get('dismissQueue');
-        $this->force = Settings::instance()->get('force');
-        $this->modal = Settings::instance()->get('modal');
-        $this->maxVisible = Settings::instance()->get('maxVisible');
+        $settings = Settings::instance()->value;
+
+        if (!is_array($settings)) {
+            return;
+        }
+
+        $this->layout = $settings['layout'];
+        $this->openAnimation = $settings['openAnimation'];
+        $this->closeAnimation = $settings['closeAnimation'];
+        $this->theme = $settings['theme'];
+        $this->template = $settings['template'];
+        $this->timeout = $settings['timeout'];
+        $this->dismissQueue = $settings['dismissQueue'];
+        $this->force = $settings['force'];
+        $this->modal = $settings['modal'];
+        $this->maxVisible = $settings['maxVisible'];
     }
 
 }
