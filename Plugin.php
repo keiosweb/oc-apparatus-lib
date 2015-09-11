@@ -49,28 +49,19 @@ class Plugin extends PluginBase
             ]
         ];
     }
-
-    public function boot()
+    
+    public function register()
     {
-        $translator = $this->app->make('translator');
-
+        
         $this->app->register('Keios\LaravelApparatus\LaravelApparatusServiceProvider');
 
         $this->app->singleton(
             'apparatus.route.resolver',
             function () {
-                return new RouteResolver($this->app['config'], $this->app->make('log'));
+                return new RouteResolver($this->app['config'], $this->app['log']);
             }
         );
-
-        $this->app->when('Keios\Apparatus\Classes\TranslApiController')
-            ->needs('October\Rain\Translation\Translator')
-            ->give(
-                function () use ($translator) {
-                    return $translator;
-                }
-            );
-
+        
         $this->app->singleton(
             'apparatus.backend.injector',
             function () {
@@ -84,6 +75,19 @@ class Plugin extends PluginBase
                 return new DependencyInjector($this->app);
             }
         );
+    }
+
+    public function boot()
+    {
+        $translator = $this->app->make('translator');
+
+        $this->app->when('Keios\Apparatus\Classes\TranslApiController')
+            ->needs('October\Rain\Translation\Translator')
+            ->give(
+                function () use ($translator) {
+                    return $translator;
+                }
+            );
 
         $this->app->make('events')->listen(
             'cms.page.initComponents',
