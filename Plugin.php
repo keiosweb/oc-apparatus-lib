@@ -35,6 +35,16 @@ class Plugin extends PluginBase
         ];
     }
 
+    public function registerPermissions()
+    {
+        return [
+            'keios.apparatus.access_settings' => [
+                'tab'   => 'keios.apparatus::lang.permissions.tab',
+                'label' => 'keios.apparatus::lang.permissions.access_settings',
+            ],
+        ];
+    }
+
     public function registerSettings()
     {
         return [
@@ -44,6 +54,7 @@ class Plugin extends PluginBase
                 'category'    => 'Apparatus',
                 'icon'        => 'icon-globe',
                 'class'       => '\Keios\Apparatus\Models\Settings',
+                'permissions' => ['keios.apparatus.access_settings'],
                 'order'       => 500,
                 'keywords'    => 'messages flash notifications'
             ]
