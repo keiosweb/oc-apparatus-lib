@@ -28,6 +28,9 @@ class Plugin extends PluginBase
         ];
     }
 
+    /**
+     * @return array
+     */
     public function registerComponents()
     {
         return [
@@ -35,6 +38,9 @@ class Plugin extends PluginBase
         ];
     }
 
+    /**
+     * @return array
+     */
     public function registerPermissions()
     {
         return [
@@ -45,6 +51,9 @@ class Plugin extends PluginBase
         ];
     }
 
+    /**
+     * @return array
+     */
     public function registerSettings()
     {
         return [
@@ -60,7 +69,10 @@ class Plugin extends PluginBase
             ]
         ];
     }
-    
+
+    /**
+     * Plugin register method
+     */
     public function register()
     {
         
@@ -88,6 +100,9 @@ class Plugin extends PluginBase
         );
     }
 
+    /**
+     * Plugin boot method
+     */
     public function boot()
     {
         $translator = $this->app->make('translator');

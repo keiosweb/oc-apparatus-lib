@@ -1,6 +1,9 @@
 <?php
 
 return [
+    'labels' => [
+        'pluginName' => 'Procesor scenariuszy logiki biznesowej',
+    ],
     'errors'      => [
         'pageWithComponentNotFound' => 'Komponent %s nie jest przydzielony do żadnej strony CMS.',
         'parameterNotFound'         => 'Parametr %s nie został znaleziony w konfiguracji komponentu %s.',

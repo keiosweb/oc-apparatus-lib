@@ -3,6 +3,11 @@
 use Cms\Classes\ComponentBase;
 use Keios\Apparatus\Models\Settings;
 
+/**
+ * Class Messaging
+ *
+ * @package Keios\Apparatus\Components
+ */
 class Messaging extends ComponentBase
 {
     public $layout;
@@ -16,6 +21,9 @@ class Messaging extends ComponentBase
     public $modal;
     public $maxVisible;
 
+    /**
+     * @return array
+     */
     public function componentDetails()
     {
         return [
@@ -24,6 +32,9 @@ class Messaging extends ComponentBase
         ];
     }
 
+    /**
+     * Component onRun method
+     */
     public function onRun()
     {
         $this->addCss('/plugins/keios/apparatus/assets/css/animate.css');

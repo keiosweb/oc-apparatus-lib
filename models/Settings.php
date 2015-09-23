@@ -8,6 +8,9 @@ use October\Rain\Database\Model;
 class Settings extends Model
 {
 
+    /**
+     * @var array
+     */
     public $implement = ['System.Behaviors.SettingsModel'];
     /**
      * @var array Guarded fields
@@ -29,6 +32,9 @@ class Settings extends Model
      */
     public $settingsFields = 'fields.yaml';
 
+    /**
+     * @return array
+     */
     public function listAnimations()
     {
         return [
@@ -109,16 +115,25 @@ class Settings extends Model
         ];
     }
 
+    /**
+     * @return array
+     */
     public function getOpenAnimationOptions()
     {
         return $this->listAnimations();
     }
 
+    /**
+     * @return array
+     */
     public function getCloseAnimationOptions()
     {
         return $this->listAnimations();
     }
 
+    /**
+     * @return array
+     */
     public function getLayoutOptions()
     {
         return [
