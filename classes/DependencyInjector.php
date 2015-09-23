@@ -3,15 +3,31 @@
 use Illuminate\Contracts\Container\Container;
 use Keios\Apparatus\Contracts\NeedsDependencies;
 
+/**
+ * Class DependencyInjector
+ *
+ * @package Keios\Apparatus\Classes
+ */
 class DependencyInjector
 {
+    /**
+     * @var Container
+     */
     protected $container;
 
+    /**
+     * DependencyInjector constructor.
+     *
+     * @param Container $container
+     */
     public function __construct(Container $container)
     {
         $this->container = $container;
     }
 
+    /**
+     * @param $object
+     */
     public function injectDependencies($object)
     {
         if (!is_object($object)) {

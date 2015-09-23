@@ -15,16 +15,34 @@ use Illuminate\Routing\Controller;
 use October\Rain\Translation\Translator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+/**
+ * Class TranslApiController
+ *
+ * @package Keios\Apparatus\Classes
+ */
 class TranslApiController extends Controller
 {
 
+    /**
+     * @var Translator
+     */
     protected $translator;
 
+    /**
+     * TranslApiController constructor.
+     *
+     * @param Translator $translator
+     */
     public function __construct(Translator $translator)
     {
         $this->translator = $translator;
     }
 
+    /**
+     * @param Request $request
+     *
+     * @return RedirectResponse|JsonResponse
+     */
     public function getTranslations(Request $request)
     {
         $data = $request->request->all();

@@ -2,14 +2,34 @@
 
 use Backend\Classes\Controller;
 
+/**
+ * Class BackendInjector
+ *
+ * @package Keios\Apparatus\Classes
+ */
 class BackendInjector
 {
+    /**
+     * @var bool
+     */
     protected $useBackendJSInjector = true;
 
+    /**
+     * @var array
+     */
     protected $jsAssets = [];
+    /**
+     * @var array
+     */
     protected $cssAssets = [];
+    /**
+     * @var array
+     */
     protected $ajaxHandlers = [];
 
+    /**
+     * BackendInjector constructor.
+     */
     public function __construct()
     {
         Controller::extend(
@@ -44,16 +64,29 @@ class BackendInjector
         );
     }
 
+    /**
+     * @param       $path
+     * @param array $attributes
+     */
     public function addJs($path, $attributes = [])
     {
         $this->jsAssets[] = ['path' => $path, 'attributes' => $attributes];
     }
 
+    /**
+     * @param       $path
+     * @param array $attributes
+     */
     public function addCss($path, $attributes = [])
     {
         $this->cssAssets[] = ['path' => $path, 'attributes' => $attributes];
     }
 
+    /**
+     * @param          $name
+     * @param callable $handler
+     * @param null     $extension
+     */
     public function addAjaxHandler($name, callable $handler, $extension = null)
     {
         $this->ajaxHandlers[] = ['name' => $name, 'function' => $handler, 'extension' => $extension];

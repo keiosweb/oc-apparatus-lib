@@ -6,18 +6,44 @@ use Cms\Classes\Theme;
 use Cms\Classes\Page;
 
 
+/**
+ * Class RouteResolver
+ *
+ * @package Keios\Apparatus\Classes
+ */
 class RouteResolver
 {
+    /**
+     * @var Theme
+     */
     protected $theme;
 
+    /**
+     * @var array
+     */
     protected $pages;
 
+    /**
+     * @var Log
+     */
     protected $log;
 
+    /**
+     * @var Repository
+     */
     protected $config;
 
+    /**
+     * @var array
+     */
     protected $componentPageCache = [];
 
+    /**
+     * RouteResolver constructor.
+     *
+     * @param Repository $config
+     * @param Log        $log
+     */
     public function __construct(Repository $config, Log $log)
     {
         $this->theme = Theme::getActiveTheme();
@@ -26,6 +52,12 @@ class RouteResolver
         $this->config = $config;
     }
 
+    /**
+     * @param $component
+     *
+     * @return Page|null
+     * @throws \Exception
+     */
     public function getPageWithComponent($component)
     {
         if (isset($this->componentPageCache[$component])) {
@@ -48,6 +80,11 @@ class RouteResolver
         return null;
     }
 
+    /**
+     * @param $component
+     *
+     * @return array|Page|null
+     */
     public function resolveRouteTo($component)
     {
         if ($page = $this->getPageWithComponent($component)) {
@@ -57,6 +94,11 @@ class RouteResolver
         }
     }
 
+    /**
+     * @param $url
+     *
+     * @return mixed
+     */
     public function stripUrlParameters($url)
     {
         if (strpos($url, '/:') !== false) {
@@ -68,6 +110,11 @@ class RouteResolver
         }
     }
 
+    /**
+     * @param $component
+     *
+     * @return mixed|string
+     */
     public function resolveRouteWithoutParamsTo($component)
     {
         $page = $this->getPageWithComponent($component);
@@ -85,6 +132,14 @@ class RouteResolver
     }
 
 
+    /**
+     * @param $component
+     * @param $parameter
+     * @param $value
+     *
+     * @return mixed|null|string
+     * @throws \Exception
+     */
     public function resolveParameterizedRouteTo($component, $parameter, $value)
     {
         $page = $this->getPageWithComponent($component);
@@ -129,6 +184,11 @@ class RouteResolver
         }
     }
 
+    /**
+     * @param $component
+     *
+     * @throws \Exception
+     */
     protected function componentNotFound($component)
     {
         if ($this->config->get('app.debug')) {
@@ -138,6 +198,12 @@ class RouteResolver
         }
     }
 
+    /**
+     * @param $parameter
+     * @param $component
+     *
+     * @throws \Exception
+     */
     protected function parameterNotFound($parameter, $component)
     {
         if ($this->config->get('app.debug')) {

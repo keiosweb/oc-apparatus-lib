@@ -3,6 +3,11 @@
 
 use October\Rain\Support\Facade;
 
+/**
+ * Class Resolver
+ *
+ * @package Keios\Apparatus\Facades
+ */
 class Resolver extends Facade
 {
 
